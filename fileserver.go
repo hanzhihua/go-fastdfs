@@ -52,7 +52,7 @@ var json = jsoniter.ConfigCompatibleWithStandardLibrary
 var server *Server
 var logacc log.LoggerInterface
 var FOLDERS = []string{DATA_DIR, STORE_DIR, CONF_DIR, STATIC_DIR}
-var CONST_QUEUE_SIZE = 10000
+var CONST_QUEUE_SIZE = 100000
 var (
 	VERSION     string
 	BUILD_TIME  string
@@ -2418,6 +2418,7 @@ func (this *Server) RegisterExit() {
 func (this *Server) AppendToQueue(fileInfo *FileInfo) {
 
 	for (len(this.queueToPeers) + CONST_QUEUE_SIZE/10) > CONST_QUEUE_SIZE {
+		log.Warn("this.queueToPeers size:", len(this.queueToPeers) )
 		time.Sleep(time.Millisecond * 50)
 	}
 	this.queueToPeers <- *fileInfo
